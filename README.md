@@ -1,7 +1,8 @@
 Poppin
 ======
 
-Poppin uses BLAT to align a gene of interest to contigs from assembly.
+Poppin uses BLAT to align a gene of interest to contigs from
+assembly of multiple kmer lengths.
 
 Then it extract parts of a contig that match the gene and reassemble them to
 create a consensus sequence using CAP3.
