@@ -7,8 +7,8 @@ from collections import defaultdict
 def pslx_to_fasta(blat_output, outdir):
     '''Reads pslx file and convert it to fasta format.
 
-    Every alignment is saved as an individual fasta records.
-    Sequence ID is query ID + the number of alignments.
+    Every alignment is saved as an individual fasta record.
+    Sequence ID is query ID + an alignment number.
     '''
 
     currdir = os.path.abspath(os.curdir)
@@ -44,6 +44,7 @@ def run_blat(contig, query, blat_output, outdir):
 
 
 def run_cap3(outdir):
+    '''run CAP3 in shell on all files'''
     currdir = os.path.abspath(os.curdir)
     os.chdir(outdir)
     num_files = 0
