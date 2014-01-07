@@ -13,7 +13,7 @@ Input
 -----
 
   Poppin accepts contigs/sequences and gene sequences in FASTA format.
-  The input files should contain multiple sequences.
+  A FASTA file should contain multiple sequences.
   
 Prerequisite software
 ---------------------
