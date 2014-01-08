@@ -2,7 +2,7 @@ import sys
 import glob
 import os
 
-for f in glob.glob(os.path.join(sys.argv[1], '*cap.fa.contigs')):
+for f in glob.glob(os.path.join(sys.argv[1], '*.fa.cap.contigs')):
     geneid = f.split('.')[2].split('_')[-1]
     tmp = '%s.tmp' % f
     tmp = open(tmp, 'w')
