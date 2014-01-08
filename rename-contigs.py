@@ -5,11 +5,13 @@ import os
 for f in glob.glob(os.path.join(sys.argv[1], '*.fa.cap.contigs')):
     geneid = f.split('.')[2].split('_')[-1]
     tmp = '%s.tmp' % f
-    tmp = open(tmp, 'w')
+    tmpfile = open(tmp, 'w')
     for line in open(f):
         if line.startswith('>'):
-            line = line.strip('\n').replace('>Contig', '>' + geneid + '_')
-            print >> tmp, line
+            line = line.strip('\n').replace('>', '>' + geneid + '_')
+            print >> tmpfile, line
         else:
-            print >> tmp, line.strip('\n')
-    tmp.close()
+            print >> tmpfile, line.strip('\n')
+    tmpfile.close()
+    os.rename(tmp, f)
+    os.remove(tmp)
