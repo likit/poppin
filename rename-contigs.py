@@ -14,4 +14,3 @@ for f in glob.glob(os.path.join(sys.argv[1], '*.fa.cap.contigs')):
             print >> tmpfile, line.strip('\n')
     tmpfile.close()
     os.rename(tmp, f)
-    os.remove(tmp)
