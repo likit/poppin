@@ -8,7 +8,7 @@ for f in glob.glob(os.path.join(sys.argv[1], '*.fa.cap.contigs')):
     tmp = open(tmp, 'w')
     for line in open(f):
         if line.startswith('>'):
-            line.strip('\n').replace('Contig', geneid + '-')
+            line = line.strip('\n').replace('>Contig', '>' + geneid + '_')
             print >> tmp, line
         else:
             print >> tmp, line.strip('\n')
