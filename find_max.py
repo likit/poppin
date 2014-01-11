@@ -4,7 +4,7 @@ from Bio import SeqIO
 
 def find_max(infile):
     max_length = None
-    for rec in SeqIO.parse(infile):
+    for rec in SeqIO.parse(infile, 'fasta'):
         print rec.id, len(rec.seq)
         if not max_length:
             max_length = rec
