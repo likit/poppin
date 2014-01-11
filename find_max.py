@@ -12,7 +12,8 @@ def find_max(infile):
             if len(max_length.seq) < len(rec.seq):
                 max_length = rec
 
-    print "The longest sequence is", max_length.id, len(max_length.seq)
+    # print "The longest sequence is", max_length.id, len(max_length.seq)
+    SeqIO.write(max_length, infile + '.longest', 'fasta')
 
 
 if __name__=='__main__':
