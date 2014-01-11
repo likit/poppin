@@ -15,10 +15,10 @@ try:
 except IndexError:
     seqid = 'supercontig'
 
-superseq = SeqRecord('')  # empty sequence
-superseq.id = seqid
+superseq = SeqRecord(id=seqid, seq='')  # empty sequence
 numseq = 0
 for infile in glob.glob(sys.argv[1]):
+    print 'working on %s' % infile
     for rec in SeqIO.parse(infile, 'fasta'):
         superseq += rec
         numseq += 1
