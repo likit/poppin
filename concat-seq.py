@@ -9,7 +9,7 @@ Usage: concat-seq.py <input files> <seqid>
 
 '''
 
-superseq = SeqRecord(id='supercontig', seq='')  # empty sequence
+superseq = SeqRecord(seq='')  # empty sequence
 numseq = 0
 for infile in sys.argv[1:]:
     print >> sys.stderr, 'working on %s' % infile
@@ -17,6 +17,7 @@ for infile in sys.argv[1:]:
         superseq += rec
         numseq += 1
 
+superseq.id = "supercontig"
 SeqIO.write(superseq, sys.stdout, 'fasta')
 
 print >> sys.stderr, 'Total sequences: %d' % numseq
