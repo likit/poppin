@@ -10,15 +10,10 @@ Usage: concat-seq.py <input files> <seqid>
 
 '''
 
-try:
-    seqid = sys.argv[2]
-except IndexError:
-    seqid = 'supercontig'
-
-superseq = SeqRecord(id=seqid, seq='')  # empty sequence
+superseq = SeqRecord(id='supercontig', seq='')  # empty sequence
 numseq = 0
-for infile in glob.glob(sys.argv[1]):
-    print 'working on %s' % infile
+for infile in glob.glob(sys.argv[1:]):
+    print >> sys.stderr, 'working on %s' % infile
     for rec in SeqIO.parse(infile, 'fasta'):
         superseq += rec
         numseq += 1
