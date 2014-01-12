@@ -45,6 +45,9 @@ def pslx_to_fasta(blat_output, contig, outdir):
         queries[curr_query] += 1
         sequences.append(contigseq)
 
+    SeqIO.write(sequences, op, 'fasta')
+    op.close()
+
     os.chdir(currdir)
 
 def run_blat(contig, query, blat_output, outdir):
