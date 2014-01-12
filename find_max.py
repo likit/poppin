@@ -1,5 +1,6 @@
 import sys
 from Bio import SeqIO
+from Bio.Seq import Seq
 
 '''Finds the longest sequence in a FASTA file and writes
 it to stdout.
@@ -10,7 +11,9 @@ def find_max(infile):
     max_length = None
     for rec in SeqIO.parse(infile, 'fasta'):
         # print rec.id, len(rec.seq)
-        rec.seq = rec.seq.replace('N', '')
+        seq = rec.seq.tostring()
+        seq = seq.replace('N', '')
+        rec.seq = Seq(seq)
         if not max_length:
             max_length = rec
         else:
