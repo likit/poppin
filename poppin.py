@@ -99,7 +99,7 @@ def main():
 
     print >> sys.stderr, 'Step 2: convert alignments to FASTA'
     print >> sys.stderr, '=' * 50
-    pslx_to_fasta(blat_output, outdir)
+    pslx_to_fasta(blat_output, contig, outdir)
 
     print >> sys.stderr, 'Step 3: build consensus sequences using CAP3'
     print >> sys.stderr, '=' * 50
