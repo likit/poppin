@@ -10,6 +10,7 @@ def find_max(infile):
     max_length = None
     for rec in SeqIO.parse(infile, 'fasta'):
         # print rec.id, len(rec.seq)
+        rec.seq = rec.seq.replace('N', '')
         if not max_length:
             max_length = rec
         else:
