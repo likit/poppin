@@ -3,13 +3,19 @@ import subprocess
 import glob
 import os
 from collections import defaultdict
+from Bio import SeqIO
 
-def pslx_to_fasta(blat_output, outdir):
+def pslx_to_fasta(blat_output, contig, outdir):
     '''Reads pslx file and convert it to fasta format.
 
     Every alignment is saved as an individual fasta record.
     Sequence ID is query ID + an alignment number.
     '''
+
+    sequences = {}
+    contigs = {}
+    for seq in SeqIO.parse(contig, 'fasta'):
+        contigs[seq.id] = seq
 
     currdir = os.path.abspath(os.curdir)
     os.chdir(outdir)
@@ -19,21 +25,25 @@ def pslx_to_fasta(blat_output, outdir):
     for line in open(blat_output):
         cols = line.split('\t')
         new_query = cols[9]
-        sequences = cols[22].split(',')[:-1]
+        cstart, cend = int(cols[15]), int(cols[16])  # contig start, end
 
         if curr_query == None:
             curr_query = new_query
             op = open('%s_%s.fa' % (blat_output, curr_query), 'w')
 
         if curr_query != new_query:
+            SeqIO.write(sequences, op, 'fasta')
             op.close()
+            sequences = []
             curr_query = new_query
             op = open('%s_%s.fa' % (blat_output, curr_query), 'w')
 
-        for seq in sequences:
-            seqid = '>%s-%d' % (curr_query, queries[curr_query])
-            queries[curr_query] += 1
-            print >> op, '%s\n%s' % (seqid, seq)
+        contigseq = contigs[curr_query][cstart, cend]
+        contigseq.id = '>%s-%d' % (curr_query, queries[curr_query])
+        contigseq.description = ''
+        queries[curr_query] += 1
+        sequences.append(contigseq)
+
     os.chdir(currdir)
 
 def run_blat(contig, query, blat_output, outdir):
