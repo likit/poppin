@@ -25,6 +25,7 @@ def pslx_to_fasta(blat_output, contig, outdir):
     for line in open(blat_output):
         cols = line.split('\t')
         new_query = cols[9]
+        contig_name = cols[13]
         cstart, cend = int(cols[15]), int(cols[16])  # contig start, end
 
         if curr_query == None:
@@ -38,7 +39,7 @@ def pslx_to_fasta(blat_output, contig, outdir):
             curr_query = new_query
             op = open('%s_%s.fa' % (blat_output, curr_query), 'w')
 
-        contigseq = contigs[curr_query][cstart, cend]
+        contigseq = contigs[contig_name][cstart, cend]
         contigseq.id = '>%s-%d' % (curr_query, queries[curr_query])
         contigseq.description = ''
         queries[curr_query] += 1
@@ -50,7 +51,8 @@ def run_blat(contig, query, blat_output, outdir):
     '''run BLAT in shell'''
     blat_output = os.path.join(outdir, blat_output)
 
-    return subprocess.call('blat -noHead -out=pslx %s %s %s' % (contig, query, blat_output), shell=True)
+    return subprocess.call('blat -noHead -out=pslx %s %s %s' % \
+            (contig, query, blat_output), shell=True)
 
 
 def run_cap3(outdir):
