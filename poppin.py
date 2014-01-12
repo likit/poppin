@@ -12,7 +12,7 @@ def pslx_to_fasta(blat_output, contig, outdir):
     Sequence ID is query ID + an alignment number.
     '''
 
-    sequences = {}
+    sequences = []
     contigs = {}
     for seq in SeqIO.parse(contig, 'fasta'):
         contigs[seq.id] = seq
@@ -39,8 +39,8 @@ def pslx_to_fasta(blat_output, contig, outdir):
             curr_query = new_query
             op = open('%s_%s.fa' % (blat_output, curr_query), 'w')
 
-        contigseq = contigs[contig_name][cstart, cend]
-        contigseq.id = '>%s-%d' % (curr_query, queries[curr_query])
+        contigseq = contigs[contig_name][cstart:cend]
+        contigseq.id = '%s-%d' % (curr_query, queries[curr_query])
         contigseq.description = ''
         queries[curr_query] += 1
         sequences.append(contigseq)
