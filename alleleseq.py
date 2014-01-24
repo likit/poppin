@@ -8,23 +8,24 @@ the same length as provided reference sequences.
 import sys
 from Bio.Blast import NCBIXML
 from Bio import SeqIO
+from Bio.SeqRecord import SeqRecord
+from Bio.Seq import Seq
 from collections import defaultdict
 
-geneSet = sys.argv[1]
-blastOut = sys.argv[2]
-refSeqLen = {}
+refseq = sys.argv[1]
+blastinput = sys.argv[2]
+refseq_len = {}
 
 print >> sys.stderr, 'Reading reference sequences'.center(50, '=')
-for rec in SeqIO.parse(geneSet, 'fasta'):
+for rec in SeqIO.parse(refseq, 'fasta'):
     print >> sys.stderr, rec.id + ', %d bp' % len(rec)
-    refSeqLen[rec.id] = len(rec)
+    refseq_len[rec.id] = len(rec)
 
 print >> sys.stderr, 'Getting sequences'.center(50, '=')
-handle = open(blastOut)
-for blastRec in NCBIXML.parse(handle):
-    for alignment in blastRec.alignments:
+handle = open(blastinput)
+for blastrec in NCBIXML.parse(handle):
+    for alignment in blastrec.alignments:
         subject = alignment.hit_id.split('|')[-1]
-        print '>' + subject, blastRec.query
         hps  = alignment.hsps[0]
         n = hps.sbjct_start
         i = 0
@@ -33,9 +34,13 @@ for blastRec in NCBIXML.parse(handle):
             seq[n] = hps.query[i]
             i += 1
             n += 1
-        alleleSeq = ''
-        for i in range(refSeqLen[subject]):
+        alleleseq = ''
+        for i in range(refseq_len[subject]):
             base = seq[i + 1]
-            alleleSeq += '-' if base == '' else base
-        print alleleSeq, len(alleleSeq)
+            alleleseq += '-' if base == '' else base
+
+        seqrec = SeqRecord(Seq(alleleseq))
+        seqrec.id = subject
+        seqrec.description = blastrec.query
+        SeqIO.write(seqrec, sys.stdout, 'fasta')
         break  # ignore other alignments
