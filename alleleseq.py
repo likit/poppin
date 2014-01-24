@@ -41,6 +41,6 @@ for blastrec in NCBIXML.parse(handle):
 
         seqrec = SeqRecord(Seq(alleleseq))
         seqrec.id = subject
-        seqrec.description = blastrec.query
+        seqrec.description = ''
         SeqIO.write(seqrec, sys.stdout, 'fasta')
         break  # ignore other alignments
